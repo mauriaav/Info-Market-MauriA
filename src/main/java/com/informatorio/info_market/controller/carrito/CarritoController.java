@@ -3,10 +3,7 @@ package com.informatorio.info_market.controller.carrito;
 import com.informatorio.info_market.service.carrito.CarritoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -26,5 +23,9 @@ public class CarritoController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{idCarrito}")
+    public ResponseEntity cerrarCarrito(@PathVariable UUID idCarrito){
+
+    }
 
 }

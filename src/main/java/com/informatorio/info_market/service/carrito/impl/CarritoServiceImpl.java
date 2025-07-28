@@ -5,6 +5,7 @@ import com.informatorio.info_market.domain.ItemCarrito;
 import com.informatorio.info_market.domain.Producto;
 import com.informatorio.info_market.domain.Usuario;
 import com.informatorio.info_market.enumerations.EstadoCarritoEnum;
+import com.informatorio.info_market.exception.notfound.NotFoundException;
 import com.informatorio.info_market.repository.carrito.CarritoRepository;
 import com.informatorio.info_market.service.carrito.CarritoService;
 import com.informatorio.info_market.service.item.ItemService;
@@ -66,5 +67,22 @@ public class CarritoServiceImpl implements CarritoService {
                 .findFirst();
     }
 
+    @Override
+    public Carrito getCarritoEntityById(UUID idCarrito){
+        Optional<Carrito> carrito = carritoRepository.findById(idCarrito);
+        if(carrito.isPresent()){
+            return carrito.get();
+        }
+        else{
+            throw new NotFoundException("No se encontro el carrito con id : " + idCarrito);
+        }
+    }
+
+    @Override
+    public Carrito cerrarCarrito(UUID idCarrito){
+        Carrito carritoACerrar = getCarritoEntityById(idCarrito);
+        carritoACerrar.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
+        return carritoACerrar;
+    }
 
 }
