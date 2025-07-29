@@ -1,5 +1,6 @@
 package com.informatorio.info_market.controller.carrito;
 
+import com.informatorio.info_market.domain.Carrito;
 import com.informatorio.info_market.service.carrito.CarritoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,15 @@ public class CarritoController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{idCarrito}")
+    @PutMapping("/{idCarrito}/cerrar")
     public ResponseEntity cerrarCarrito(@PathVariable UUID idCarrito){
+        carritoService.cerrarCarrito(idCarrito);
+        return  ResponseEntity.ok().build();
+    }
 
+    @GetMapping("/{idCarrito}")
+    public Carrito getCarritoById(@PathVariable UUID idCarrito){
+        return carritoService.getCarritoEntityById(idCarrito);
     }
 
 }

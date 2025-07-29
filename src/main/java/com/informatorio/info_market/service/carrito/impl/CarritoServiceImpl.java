@@ -82,6 +82,7 @@ public class CarritoServiceImpl implements CarritoService {
     public Carrito cerrarCarrito(UUID idCarrito){
         Carrito carritoACerrar = getCarritoEntityById(idCarrito);
         carritoACerrar.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
+        carritoRepository.save(carritoACerrar);
         return carritoACerrar;
     }
 
