@@ -81,9 +81,18 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     public Carrito cerrarCarrito(UUID idCarrito){
         Carrito carritoACerrar = getCarritoEntityById(idCarrito);
-        carritoACerrar.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
-        carritoRepository.save(carritoACerrar);
-        return carritoACerrar;
+        if (carritoACerrar.getEstadoCarrito().equals(EstadoCarritoEnum.ABIERTO)){
+            carritoACerrar.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
+            carritoRepository.save(carritoACerrar);
+            return carritoACerrar;
+        }else{
+            throw new IllegalStateException("El carrito ya está cerrado");
+        }
+
+
+
+
+
     }
 
 }
