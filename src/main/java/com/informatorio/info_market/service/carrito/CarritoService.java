@@ -1,6 +1,7 @@
 package com.informatorio.info_market.service.carrito;
 
 import com.informatorio.info_market.domain.Carrito;
+import com.informatorio.info_market.domain.Producto;
 import com.informatorio.info_market.enumerations.EstadoCarritoEnum;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,5 +15,9 @@ public interface CarritoService {
     void agregarProducto(UUID idUser, UUID idProducto);
 
     Optional<Carrito> getCarritoConEstado(EstadoCarritoEnum estadoCarritoEnum, List<Carrito> carritos);
+
+    Carrito getCarritoEntityById(UUID idCarrito);
+
+    Carrito cerrarCarrito(UUID idCarrito);
 
 }

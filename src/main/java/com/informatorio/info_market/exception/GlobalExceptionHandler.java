@@ -52,4 +52,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
     }
 
-}
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponseDto> handleIllegalStateException(IllegalStateException e, WebRequest webRequest) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                e,
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+
+    }}
+
