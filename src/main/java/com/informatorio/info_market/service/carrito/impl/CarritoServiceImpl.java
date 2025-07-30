@@ -1,12 +1,10 @@
 package com.informatorio.info_market.service.carrito.impl;
 
-import com.informatorio.info_market.domain.Carrito;
-import com.informatorio.info_market.domain.ItemCarrito;
-import com.informatorio.info_market.domain.Producto;
-import com.informatorio.info_market.domain.Usuario;
+import com.informatorio.info_market.domain.*;
 import com.informatorio.info_market.enumerations.EstadoCarritoEnum;
 import com.informatorio.info_market.exception.notfound.NotFoundException;
 import com.informatorio.info_market.repository.carrito.CarritoRepository;
+import com.informatorio.info_market.repository.factura.FacturaRepository;
 import com.informatorio.info_market.service.carrito.CarritoService;
 import com.informatorio.info_market.service.item.ItemService;
 import com.informatorio.info_market.service.producto.ProductoService;
@@ -26,6 +24,8 @@ import java.util.UUID;
 public class CarritoServiceImpl implements CarritoService {
 
     private CarritoRepository carritoRepository;
+
+    private FacturaRepository facturaRepository;
 
     private ProductoService productoService;
 
@@ -84,6 +84,10 @@ public class CarritoServiceImpl implements CarritoService {
         if (carritoACerrar.getEstadoCarrito().equals(EstadoCarritoEnum.ABIERTO)){
             carritoACerrar.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
             carritoRepository.save(carritoACerrar);
+            Factura nueva_factura = new Factura();
+            nueva_factura.setCarrito(carritoACerrar);
+            nueva_factura.setFechaDeEmision(LocalDate.now());
+            facturaRepository.save(nueva_factura);
             return carritoACerrar;
         }else{
             throw new IllegalStateException("El carrito ya está cerrado");
