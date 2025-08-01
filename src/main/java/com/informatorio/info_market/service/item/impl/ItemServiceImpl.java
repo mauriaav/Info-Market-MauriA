@@ -29,7 +29,7 @@ public class ItemServiceImpl implements ItemService {
 
         if ( itemCarrito.isPresent() ) {
             itemCarrito.get().setCantidad( itemCarrito.get().getCantidad() + cantidad );
-            return itemCarrito.get();
+            return itemCarritoRepository.save(itemCarrito.get());
         }else {
 
             ItemCarrito nuevoItemCarrito = new ItemCarrito();
@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
             nuevoItemCarrito.setProducto( producto );
             nuevoItemCarrito.setCarrito( carrito );
 
-            return nuevoItemCarrito ;
+            return itemCarritoRepository.save(nuevoItemCarrito);
         }
     }
 
