@@ -5,6 +5,7 @@ import com.informatorio.info_market.enumerations.EstadoCarritoEnum;
 import com.informatorio.info_market.exception.notfound.NotFoundException;
 import com.informatorio.info_market.repository.carrito.CarritoRepository;
 import com.informatorio.info_market.repository.factura.FacturaRepository;
+import com.informatorio.info_market.repository.usuario.UsuarioRepository;
 import com.informatorio.info_market.service.carrito.CarritoService;
 import com.informatorio.info_market.service.item.ItemService;
 import com.informatorio.info_market.service.producto.ProductoService;
@@ -27,17 +28,15 @@ public class CarritoServiceImpl implements CarritoService {
 
     private FacturaRepository facturaRepository;
 
-    private ProductoService productoService;
+    private UsuarioRepository usuarioRepository;
 
-    private UsuarioService usuarioService;
+    private ProductoService productoService;
 
     private ItemService itemService;
 
     @Override
-    public void agregarProducto(UUID idUser, UUID idProducto) {
+    public void agregarProducto(Usuario usuario, UUID idProducto) {
         Producto producto = productoService.getProductoEntityById(idProducto);
-
-        Usuario usuario = usuarioService.getUsuarioEntityById(idUser);
 
         Optional<Carrito> carrito = getCarritoConEstado( EstadoCarritoEnum.ABIERTO, usuario.getCarritos() );
 
@@ -53,9 +52,12 @@ public class CarritoServiceImpl implements CarritoService {
             carritoNuevo.setFactura(null);
             carritoNuevo.setFechaActualizacion(LocalDate.now());
             carritoNuevo.setFechaDeCreacion(LocalDate.now());
+            usuario.getCarritos().add(carritoNuevo);
             ItemCarrito itemCarrito = itemService.crearItemCarrito( carritoNuevo, producto, 1 );
             carritoNuevo.getItemsCarritos().add( itemCarrito );
             carritoRepository.save( carritoNuevo );
+            usuarioRepository.save(usuario);
+
         }
 
     }
@@ -79,24 +81,26 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    public Carrito cerrarCarrito(UUID idCarrito){
-        Carrito carritoACerrar = getCarritoEntityById(idCarrito);
-        if (carritoACerrar.getEstadoCarrito().equals(EstadoCarritoEnum.ABIERTO)){
-            carritoACerrar.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
-            carritoRepository.save(carritoACerrar);
-            Factura nueva_factura = new Factura();
-            nueva_factura.setCarrito(carritoACerrar);
-            nueva_factura.setFechaDeEmision(LocalDate.now());
-            facturaRepository.save(nueva_factura);
-            return carritoACerrar;
-        }else{
+    public Carrito cerrarCarritoUsuario(Usuario usuario) {
+        Optional<Carrito> carritoACerrar = getCarritoConEstado( EstadoCarritoEnum.ABIERTO, usuario.getCarritos());
+        if(carritoACerrar.isPresent()){
+            return cerrarCarrito(carritoACerrar.get());
+        }
+        else{
             throw new IllegalStateException("El carrito ya está cerrado");
         }
+    }
 
-
-
-
-
+    @Override
+    public Carrito cerrarCarrito(Carrito carrito){
+        carrito.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
+        Factura nueva_factura = new Factura();
+        nueva_factura.setCarrito(carrito);
+        nueva_factura.setFechaDeEmision(LocalDate.now());
+        facturaRepository.save(nueva_factura);
+        carrito.setFactura(nueva_factura);
+        carritoRepository.save(carrito);
+        return carrito;
     }
 
 }
