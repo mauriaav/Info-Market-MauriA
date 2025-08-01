@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface UsuarioService {
     Usuario getUsuarioEntityById(UUID id);
+    void cerrarCarritoPorUsuario(UUID idUsuario);
 }
