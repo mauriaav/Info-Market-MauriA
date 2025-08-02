@@ -1,6 +1,7 @@
 package com.informatorio.info_market.service.carrito.impl;
 
 import com.informatorio.info_market.domain.*;
+import com.informatorio.info_market.dto.itemCarrito.ItemCarritoDto;
 import com.informatorio.info_market.enumerations.EstadoCarritoEnum;
 import com.informatorio.info_market.exception.notfound.NotFoundException;
 import com.informatorio.info_market.repository.carrito.CarritoRepository;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -81,7 +79,7 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    public Carrito cerrarCarritoUsuario(Usuario usuario) {
+    public Map<String, Object> cerrarCarritoUsuario(Usuario usuario) {
         Optional<Carrito> carritoACerrar = getCarritoConEstado( EstadoCarritoEnum.ABIERTO, usuario.getCarritos());
         if(carritoACerrar.isPresent()){
             return cerrarCarrito(carritoACerrar.get());
@@ -92,7 +90,7 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    public Carrito cerrarCarrito(Carrito carrito){
+    public Map<String, Object> cerrarCarrito(Carrito carrito){
         carrito.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
         Factura nueva_factura = new Factura();
         nueva_factura.setCarrito(carrito);
@@ -100,7 +98,14 @@ public class CarritoServiceImpl implements CarritoService {
         facturaRepository.save(nueva_factura);
         carrito.setFactura(nueva_factura);
         carritoRepository.save(carrito);
-        return carrito;
+        Map<String, Object> facturaFinal = new HashMap<>();
+        List<ItemCarritoDto> items = itemService.listarItemsCarrito(carrito.getItemsCarritos());
+        double precioTotal = items.stream()
+                .mapToDouble(item -> item.getPrecioTotal())
+                .sum();
+        facturaFinal.put("productos", items);
+        facturaFinal.put("precioTotal",precioTotal);
+        return facturaFinal;
     }
 
 }

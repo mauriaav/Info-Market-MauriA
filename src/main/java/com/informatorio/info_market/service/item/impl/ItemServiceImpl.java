@@ -3,12 +3,15 @@ package com.informatorio.info_market.service.item.impl;
 import com.informatorio.info_market.domain.Carrito;
 import com.informatorio.info_market.domain.ItemCarrito;
 import com.informatorio.info_market.domain.Producto;
+import com.informatorio.info_market.dto.itemCarrito.ItemCarritoDto;
+import com.informatorio.info_market.mapper.itemCarrito.ItemCarritoMapper;
 import com.informatorio.info_market.repository.item.ItemCarritoRepository;
 import com.informatorio.info_market.service.item.ItemService;
 import com.informatorio.info_market.service.producto.ProductoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +23,7 @@ public class ItemServiceImpl implements ItemService {
     private ItemCarritoRepository itemCarritoRepository;
 
     private ProductoService productoService;
+    private ItemCarritoMapper itemCarritoMapper;
 
 
     @Override
@@ -55,4 +59,15 @@ public class ItemServiceImpl implements ItemService {
         return itemCarrito;
     }
 
+    @Override
+    public List<ItemCarritoDto> listarItemsCarrito(List<ItemCarrito> productos) {
+        List<ItemCarritoDto> itemsCarrito = new ArrayList<>();
+        itemsCarrito.addAll(
+                productos.stream()
+                        .map(item -> itemCarritoMapper.itemCarritoToItemCarritoDto(item))
+                        .toList()
+        );
+
+        return itemsCarrito;
+    }
 }

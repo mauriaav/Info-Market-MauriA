@@ -1,6 +1,7 @@
 package com.informatorio.info_market.service.usuario.impl;
 
 import com.informatorio.info_market.domain.Usuario;
+import com.informatorio.info_market.dto.itemCarrito.ItemCarritoDto;
 import com.informatorio.info_market.exception.notfound.NotFoundException;
 import com.informatorio.info_market.repository.usuario.UsuarioRepository;
 import com.informatorio.info_market.service.carrito.CarritoService;
@@ -8,8 +9,7 @@ import com.informatorio.info_market.service.usuario.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -30,8 +30,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void cerrarCarritoPorUsuario(UUID idUsuario) {
-        carritoService.cerrarCarritoUsuario(getUsuarioEntityById(idUsuario));
+    public Map<String, Object> cerrarCarritoPorUsuario(UUID idUsuario) {
+        Map<String, Object> facturaFinal = carritoService.cerrarCarritoUsuario(getUsuarioEntityById(idUsuario));
+
+        return facturaFinal;
 
     }
 }
