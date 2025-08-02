@@ -3,10 +3,12 @@ package com.informatorio.info_market.service.carrito;
 import com.informatorio.info_market.domain.Carrito;
 import com.informatorio.info_market.domain.Producto;
 import com.informatorio.info_market.domain.Usuario;
+import com.informatorio.info_market.dto.itemCarrito.ItemCarritoDto;
 import com.informatorio.info_market.enumerations.EstadoCarritoEnum;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,8 +21,8 @@ public interface CarritoService {
 
     Carrito getCarritoEntityById(UUID idCarrito);
 
-    Carrito cerrarCarrito(Carrito carrito);
+    Map<String, Object> cerrarCarrito(Carrito carrito);
 
-    Carrito cerrarCarritoUsuario(Usuario usuario);
+    Map<String, Object> cerrarCarritoUsuario(Usuario usuario);
 
 }
