@@ -70,4 +70,11 @@ public class ItemServiceImpl implements ItemService {
 
         return itemsCarrito;
     }
+
+    @Override
+    public Double obtenerValorTotal(List<ItemCarritoDto> items) {
+        return items.stream()
+                .mapToDouble(item -> item.getPrecioTotal())
+                .sum();
+    }
 }

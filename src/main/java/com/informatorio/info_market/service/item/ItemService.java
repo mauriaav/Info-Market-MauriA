@@ -10,4 +10,5 @@ import java.util.List;
 public interface ItemService {
     ItemCarrito crearItemCarrito(Carrito carrito, Producto producto, int cantidad);
     List<ItemCarritoDto> listarItemsCarrito(List<ItemCarrito> productos);
+    Double obtenerValorTotal(List<ItemCarritoDto> productos);
 }
