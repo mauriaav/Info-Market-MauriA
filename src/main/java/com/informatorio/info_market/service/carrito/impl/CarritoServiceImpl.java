@@ -8,6 +8,7 @@ import com.informatorio.info_market.repository.carrito.CarritoRepository;
 import com.informatorio.info_market.repository.factura.FacturaRepository;
 import com.informatorio.info_market.repository.usuario.UsuarioRepository;
 import com.informatorio.info_market.service.carrito.CarritoService;
+import com.informatorio.info_market.service.factura.FacturaService;
 import com.informatorio.info_market.service.item.ItemService;
 import com.informatorio.info_market.service.producto.ProductoService;
 import com.informatorio.info_market.service.usuario.UsuarioService;
@@ -24,11 +25,10 @@ public class CarritoServiceImpl implements CarritoService {
 
     private CarritoRepository carritoRepository;
 
-    private FacturaRepository facturaRepository;
-
     private UsuarioRepository usuarioRepository;
 
     private ProductoService productoService;
+    private FacturaService facturaService;
 
     private ItemService itemService;
 
@@ -93,16 +93,14 @@ public class CarritoServiceImpl implements CarritoService {
     public Map<String, Object> cerrarCarrito(Carrito carrito){
         carrito.setEstadoCarrito(EstadoCarritoEnum.CERRADO);
         Factura nueva_factura = new Factura();
-        nueva_factura.setCarrito(carrito);
-        nueva_factura.setFechaDeEmision(LocalDate.now());
-        facturaRepository.save(nueva_factura);
+        facturaService.crearFactura(carrito, nueva_factura);
+
         carrito.setFactura(nueva_factura);
         carritoRepository.save(carrito);
+
         Map<String, Object> facturaFinal = new HashMap<>();
         List<ItemCarritoDto> items = itemService.listarItemsCarrito(carrito.getItemsCarritos());
-        double precioTotal = items.stream()
-                .mapToDouble(item -> item.getPrecioTotal())
-                .sum();
+        double precioTotal = itemService.obtenerValorTotal(items);
         facturaFinal.put("productos", items);
         facturaFinal.put("precioTotal",precioTotal);
         return facturaFinal;

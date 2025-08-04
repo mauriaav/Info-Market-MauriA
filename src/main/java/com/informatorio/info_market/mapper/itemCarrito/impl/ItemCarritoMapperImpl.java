@@ -13,7 +13,7 @@ public class ItemCarritoMapperImpl implements ItemCarritoMapper {
     @Override
     public ItemCarritoDto itemCarritoToItemCarritoDto(ItemCarrito itemCarrito) {
         ItemCarritoDto item = new ItemCarritoDto();
-        item.setNombreProduco(itemCarrito.getProducto().getNombre());
+        item.setNombreProducto(itemCarrito.getProducto().getNombre());
         item.setCantidadProducto(itemCarrito.getCantidad());
         item.setPrecioTotal(itemCarrito.getProducto().getPrecio() * itemCarrito.getCantidad());
         return item;
