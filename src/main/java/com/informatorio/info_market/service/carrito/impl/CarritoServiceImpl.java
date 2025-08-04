@@ -85,7 +85,7 @@ public class CarritoServiceImpl implements CarritoService {
             return cerrarCarrito(carritoACerrar.get());
         }
         else{
-            throw new IllegalStateException("El carrito ya está cerrado");
+            throw new IllegalStateException("El usuario no tiene carritos para cerrar.");
         }
     }
 

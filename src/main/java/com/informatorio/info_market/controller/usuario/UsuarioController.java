@@ -22,9 +22,9 @@ public class UsuarioController {
 
     @PutMapping("/{idUsuario}/cerrar-carrito")
     public ResponseEntity<Map<String, Object>> cerrarCarrito(@PathVariable UUID idUsuario){
-        Map<String, Object> itemsCarritoDto = usuarioService.cerrarCarritoPorUsuario(idUsuario);
+        Map<String, Object> detalleFactura = usuarioService.cerrarCarritoPorUsuario(idUsuario);
         return  ResponseEntity.ok().
                 contentType(MediaType.APPLICATION_JSON)
-                .body(itemsCarritoDto);
+                .body(detalleFactura);
     }
 }

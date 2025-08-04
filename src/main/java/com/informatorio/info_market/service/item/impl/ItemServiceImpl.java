@@ -61,12 +61,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemCarritoDto> listarItemsCarrito(List<ItemCarrito> productos) {
-        List<ItemCarritoDto> itemsCarrito = new ArrayList<>();
-        itemsCarrito.addAll(
-                productos.stream()
-                        .map(item -> itemCarritoMapper.itemCarritoToItemCarritoDto(item))
-                        .toList()
-        );
+        List<ItemCarritoDto> itemsCarrito = new ArrayList<>(productos.stream()
+                .map(item -> itemCarritoMapper.itemCarritoToItemCarritoDto(item))
+                .toList());
 
         return itemsCarrito;
     }
