@@ -31,9 +31,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Map<String, Object> cerrarCarritoPorUsuario(UUID idUsuario) {
-        Map<String, Object> facturaFinal = carritoService.cerrarCarritoUsuario(getUsuarioEntityById(idUsuario));
 
-        return facturaFinal;
+        return carritoService.cerrarCarritoUsuario(getUsuarioEntityById(idUsuario));
 
     }
 }
