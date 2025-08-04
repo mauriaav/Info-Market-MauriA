@@ -1,6 +1,5 @@
 package com.informatorio.info_market.controller.usuario;
 
-import com.informatorio.info_market.dto.itemCarrito.ItemCarritoDto;
 import com.informatorio.info_market.service.usuario.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
