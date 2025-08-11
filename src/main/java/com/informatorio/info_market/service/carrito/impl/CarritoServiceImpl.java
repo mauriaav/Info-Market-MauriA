@@ -1,9 +1,11 @@
 package com.informatorio.info_market.service.carrito.impl;
 
 import com.informatorio.info_market.domain.*;
+import com.informatorio.info_market.dto.carrito.CarritoDto;
 import com.informatorio.info_market.dto.itemCarrito.ItemCarritoDto;
 import com.informatorio.info_market.enumerations.EstadoCarritoEnum;
 import com.informatorio.info_market.exception.notfound.NotFoundException;
+import com.informatorio.info_market.mapper.carrito.CarritoMapper;
 import com.informatorio.info_market.repository.carrito.CarritoRepository;
 import com.informatorio.info_market.repository.factura.FacturaRepository;
 import com.informatorio.info_market.repository.usuario.UsuarioRepository;
@@ -31,6 +33,8 @@ public class CarritoServiceImpl implements CarritoService {
     private FacturaService facturaService;
 
     private ItemService itemService;
+
+    private CarritoMapper carritoMapper;
 
     @Override
     public void agregarProducto(Usuario usuario, UUID idProducto) {
@@ -68,10 +72,10 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    public Carrito getCarritoEntityById(UUID idCarrito){
+    public CarritoDto getCarritoEntityById(UUID idCarrito){
         Optional<Carrito> carrito = carritoRepository.findById(idCarrito);
         if(carrito.isPresent()){
-            return carrito.get();
+            return carritoMapper.carritoToCarritoDto(carrito.get());
         }
         else{
             throw new NotFoundException("No se encontro el carrito con id : " + idCarrito);

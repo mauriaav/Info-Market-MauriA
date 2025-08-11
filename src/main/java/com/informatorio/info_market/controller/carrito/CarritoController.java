@@ -2,6 +2,7 @@ package com.informatorio.info_market.controller.carrito;
 
 import com.informatorio.info_market.domain.Carrito;
 import com.informatorio.info_market.domain.Usuario;
+import com.informatorio.info_market.dto.carrito.CarritoDto;
 import com.informatorio.info_market.service.carrito.CarritoService;
 import com.informatorio.info_market.service.usuario.UsuarioService;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class CarritoController {
 
 
     @GetMapping("/{idCarrito}")
-    public Carrito getCarritoById(@PathVariable UUID idCarrito){
+    public CarritoDto getCarritoById(@PathVariable UUID idCarrito){
         return carritoService.getCarritoEntityById(idCarrito);
     }
 

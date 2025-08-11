@@ -15,6 +15,7 @@ public class ItemCarritoMapperImpl implements ItemCarritoMapper {
         ItemCarritoDto item = new ItemCarritoDto();
         item.setNombreProducto(itemCarrito.getProducto().getNombre());
         item.setCantidadProducto(itemCarrito.getCantidad());
+        item.setPrecioUnitario(itemCarrito.getProducto().getPrecio());
         item.setPrecioTotal(itemCarrito.getProducto().getPrecio() * itemCarrito.getCantidad());
         return item;
     }
